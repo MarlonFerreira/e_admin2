@@ -1,0 +1,97 @@
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="description">LISTAGEM DE CATEGORIAS</h3>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="float-left">
+			<h4>Categorias</h4>
+		</div>
+		<div class="float-right">
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filtroModal">Filtrar
+				categorias</button>
+
+			<button type="button" (click)="buscarCategorias()" class="btn btn-success">Buscar todas as
+				categorias</button>
+			&nbsp;
+			<label for="limit">Linhas por pagina:</label>
+			<select name="limit" id="limit" [(ngModel)]="limit" (change)="buscarCategorias()">
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<!-- <table class="table table-hover" *ngIf="categoria$ | async as categorias; else loading"> -->
+		<table class="table table-hover" *ngIf="categorias; else loading">
+			<thead>
+				<tr>
+					<th>Grupo</th>
+					<th>Nome</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let categoria of categorias">
+					<!-- categoria?.result -->
+					<td>{{ categoria.grupo }}</td>
+					<td>{{ categoria.nome }}</td>
+					<td>
+						<span class="float-right">
+							<button class="btn btn-warning mb-1 btn-sm" data-bs-toggle="modal"
+								data-bs-target="#updateModal" (click)="onSelect(categoria)">Editar</button>
+							<button class="btn btn-danger mb-1 btn-sm" data-bs-toggle="modal"
+								data-bs-target="#deleteModal" (click)="onSelect(categoria)">Remover</button>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot class="grey lighten-5 w-100">
+				<tr>
+					<td colspan="4">
+						<nav aria-label="Navegação de página exemplo">
+							<ul class="pagination">
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Anterior">
+										<span aria-hidden="true">&laquo;</span>
+										<span class="sr-only">Anterior</span>
+									</a>
+								</li>
+								<li class="page-item"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item">
+									<a class="page-link" href="#" aria-label="Próximo">
+										<span aria-hidden="true">&raquo;</span>
+										<span class="sr-only">Próximo</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<ng-template #loading>
+			<span>Carregando Produtos...</span>
+		</ng-template>
+	</div>
+</div>
+
+
+
+
+<app-categorias-modal-filtrar (eventEmitter)="buscarCategorias()"></app-categorias-modal-filtrar>
+
+
+<app-categorias-modal-editar [categoria]="categoria" (atualizarLista$)="buscarCategorias()" *ngIf="categoria">
+</app-categorias-modal-editar>
+
+<app-categorias-modal-excluir [categoria]="categoria" (atualizarLista$)="buscarCategorias()"
+	*ngIf="categoria"></app-categorias-modal-excluir>

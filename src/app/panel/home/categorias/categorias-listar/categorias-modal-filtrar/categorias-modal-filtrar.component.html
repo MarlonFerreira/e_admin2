@@ -1,0 +1,127 @@
+<div class="modal fade" id="filtroModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filtragem de categorias</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <fieldset>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="inputGrupo">Grupo</label>
+                                    <input type="text" [(ngModel)]="categoriaFiltro.grupo" id="grupo_filtrar" name="grupo_filtrar"
+                                        placeholder="Grupo">
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="form-group col-lg-6">
+                                <label for="inputNome">Nome</label>
+                                    <input type="text" [(ngModel)]="categoriaFiltro.nome" id="nome_filtrar" name="nome_filtrar"
+                                        placeholder="Nome">
+                            </div>
+                        </div>
+                        <br>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary float-left" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" data-bs-dismiss="modal" (click)="buscarCategoria()"
+                    class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <br>
+    <span>Carregando Categorias...</span>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="modal fade" id="filtroModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filtragem de categorias</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <fieldset>
+                        <div class="row" *ngIf="categorias">
+                            <div class="form-group col-lg-6">
+                                <label for="inputGrupo">Categoria</label>
+                                <select class="form-control" name="grupo">
+                                    <option value="" selected disabled hidden>
+                                        Categoria
+                                    </option>
+                                    <option *ngFor="let categoria of categorias" [value]="categoria.grupo">
+                                        {{ categoria.grupo }}
+                                    </option>
+                                </select>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="form-group col-lg-6">
+                                <label for="inputGrupo">Nome</label>
+                                <select class="form-control" name="nome">
+                                    <option value="" selected disabled hidden>
+                                        Nome
+                                    </option>
+                                    <option *ngFor="let categoria of categorias" [value]="categoria.nome">
+                                        {{ categoria.nome }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary float-left" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" data-bs-dismiss="modal" (click)="buscarCategoria()"
+                    class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <br>
+    <span>Carregando Categorias...</span>
+</ng-template> -->

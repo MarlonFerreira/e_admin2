@@ -1,0 +1,21 @@
+Cadastro de categorias
+<br>
+<br>
+<form class="formulario" id="formCadastrar">
+    <div class="row">
+        <div class="col">
+            <label for="grupo">Grupo: </label>
+            <input type="text" [(ngModel)]="categoria.grupo" id="grupo" name="grupo" placeholder="Grupo">
+        </div>
+        <div class="col">
+            <label for="nome">Nome: </label>
+            <input type="text" [(ngModel)]="categoria.nome" id="nome" name="nome" placeholder="Nome">
+        </div>
+
+    </div>
+
+
+    <br>
+    <br>
+    <input type="button" (click)="novaCategoria()" value="CADASTRAR">
+</form>
