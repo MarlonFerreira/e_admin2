@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { of } from 'rxjs';
-import { groupBy, mergeMap, reduce } from 'rxjs/operators';
+import { UrlSerializer } from '@angular/router';
 
 import { Categoria } from 'src/app/core/model/categoria.model';
 import { environment } from 'src/environments/environment';
+import { CategoriasService } from '../../categorias.service';
 
 @Component({
   selector: 'app-categorias-modal-filtrar',
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CategoriasModalFiltrarComponent implements OnInit {
 
-  private readonly apiUrl = `${environment.API}categorias`
+  private readonly apiUrl = `${environment.API}/categorias`
 
   @Output()
   eventEmitter = new EventEmitter();
@@ -20,6 +20,8 @@ export class CategoriasModalFiltrarComponent implements OnInit {
   public categoriaFiltro: Categoria
 
   constructor(
+    private categoriasService: CategoriasService,
+    private serializer: UrlSerializer
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,14 @@ export class CategoriasModalFiltrarComponent implements OnInit {
   }
 
   buscarCategoria() {
-    this.eventEmitter.emit(this.categoriaFiltro)
+    // const tree = this.categoriasService.urltree(this.categoriaFiltro)
+    // const URL_GET = `${this.apiUrl}${this.serializer.serialize(tree).toString().toLowerCase()}`
+
+    this.categoriasService.setFiltro(this.categoriaFiltro)
+    this.eventEmitter.emit()
+
+    // for (var key in this.categoriaFiltro) {
+    //   this.categoriaFiltro[key] = null
+    // }
   }
 }

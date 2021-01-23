@@ -10,7 +10,7 @@ import { ResponseLoginModel } from './response-login-model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = `${environment.API}loginusuario`;
+  private readonly apiUrl = `${environment.API}/loginusuario`;
 
   constructor(
     private httpClient: HttpClient

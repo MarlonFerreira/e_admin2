@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { groupBy, mergeMap, reduce, takeUntil } from 'rxjs/operators';
-
+import { takeUntil } from 'rxjs/operators';
 
 import { Categoria } from 'src/app/core/model/categoria.model';
-import { FiltroService } from 'src/app/core/service/filtro/filtro.service';
+import { CategoriasService } from 'src/app/panel/home/categorias/categorias.service'
 import { RestService } from 'src/app/core/service/rest/rest.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-categorias-listar',
@@ -15,69 +13,71 @@ import { environment } from 'src/environments/environment';
 })
 export class CategoriasListarComponent implements OnInit {
 
-  private readonly apiURL = `${environment.API}categorias`;
-
-  public categorias: Categoria
-  public categoria: Categoria
+  public categorias$: Observable<Categoria[]>
+  public categoriaSelecionada: Categoria
 
   public skip: number = 0
-  public limit: number = 10
+  public limit: number = 11
+
+  public page: number = 0
+  public nextPage: boolean = false
+
+  public linhas: number = 0
 
   private ngUnsubscribe$ = new Subject();
-  categoria$: Observable<Categoria[]>
 
   constructor(
     private restService: RestService,
-    private filtro: FiltroService
+    private categoriaService: CategoriasService
   ) { }
 
   ngOnInit(): void {
-    this.categoria = new Categoria()
-    this.filtro.setFiltro(`${this.apiURL}`)
-
+    this.categoriaSelecionada = new Categoria()
     this.buscarCategorias()
   }
 
-  buscarCategorias( grupo = 'Non Incorporated', nome = 'Waller' ) {
-    // of(this.restService.getDados(`${this.filtro.getFiltro()}?skip=${this.skip}&limit=${this.limit}`)
-    of(this.restService.getDados(`${this.apiURL}?grupo=${grupo}&nome=${nome}&skip=${this.skip}&limit=${this.limit}`)
+  buscarCategorias($event = null) {
+
+    if ($event != null && $event.target?.id === 'buscarTodasCategorias') {
+      this.skip = 0
+      this.categoriaService.resetFiltro()
+    }
+
+    const URL_GET = this.categoriaService.createUrlGet(this.skip, this.limit)
+
+    of(this.restService.getDados(`${URL_GET}`)
       .pipe(
-        takeUntil(this.ngUnsubscribe$)
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(dados => {
-        this.categorias = dados
-        console.log(this.categorias)
+
+        if (Object.keys(dados).length == this.limit) {
+          this.nextPage = true
+          dados.pop()
+        }
+        else
+          this.nextPage = false
+
         // dados.sort(function (a, b) {return a.nome < b.nome ? -1 : a.nome > b.nome ? 1 : 0; });
+        this.categorias$ = dados
+        this.linhas = Object.keys(this.categorias$).length
       }
       )
     )
+  }
+
+  onSelect(categoria) {
+    this.categoriaSelecionada = categoria
+  }
+
+  paginacao(pagina) {
+    this.page += pagina
+    this.skip = this.page * this.limit
+    this.buscarCategorias()
   }
 
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
-
-  onSelect(categoria) {
-    this.categoria = categoria
-  }
-
-
-
-
-  buscarFiltroCategorias($event) {
-    this.categoria$ = $event
-  }
-
-
-
-
-
-  atualizarLista() {
-    const element = (<HTMLInputElement>document.getElementById('limit')).value;
-    console.log(element)
-    this.categoria$ = this.restService.getDados(this.filtro.getFiltro())
-  }
-
-
 }

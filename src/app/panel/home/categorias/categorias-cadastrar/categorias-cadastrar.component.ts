@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CategoriasCadastrarComponent implements OnInit {
 
-  private readonly apiUrl = `${environment.API}categorias`;
+  private readonly apiUrl = `${environment.API}/categorias`;
   public categoria: Categoria = new Categoria()
   public resultado: any = true
 
